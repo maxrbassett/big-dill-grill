@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import * as site from '@data/site';
+import flyer from '@assets/flyer1.jpg';
+
+const hero = site.weeklySpecials.find((s) => s.hero);
+const everyday = site.weeklySpecials.filter((s) => !s.hero);
+---
+<section id="specials" class="scroll-mt-20 bg-parchment py-16 sm:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="text-center">
+      <p class="font-display text-sm font-bold uppercase tracking-[0.18em] text-barn-500">The board</p>
+      <h2 class="mt-2 font-display text-4xl font-bold text-pickle-700 sm:text-5xl">This Week’s Specials</h2>
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
+        <span class="inline-flex items-center gap-2 rounded-full bg-pickle-100 px-4 py-1.5 text-sm font-bold text-pickle-700">
+          <span class="h-2 w-2 rounded-full bg-pickle-500"></span>
+          {site.specialsWeekLabel}
+        </span>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-gold-400/25 px-4 py-1.5 text-sm font-bold text-wood-600">
+          Most days just <span class="text-lg text-barn-600">$10</span>
+        </span>
+      </div>
+      <p class="mx-auto mt-4 max-w-2xl text-ink-soft">{site.specialsNote}</p>
+      <div class="mt-5">
+        <a href={site.orderUrl} class="inline-flex items-center gap-2 rounded-full bg-pickle-600 px-6 py-3 text-sm font-bold text-cream shadow-sm transition-colors hover:bg-pickle-700">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 6h18M3 6l1.5 12.5a2 2 0 0 0 2 1.5h11a2 2 0 0 0 2-1.5L21 6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Order online for pickup
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-12 grid gap-8 lg:grid-cols-[1.55fr_1fr]">
+      <!-- The board: Friday hero + the $10 line-up -->
+      <div>
+        {hero && (
+          <article class="relative overflow-hidden rounded-[var(--radius-card)] border-2 border-gold-400 bg-gradient-to-br from-barn-600 to-barn-700 p-6 text-cream shadow-lg sm:p-8">
+            <span class="absolute right-5 top-5 rounded-full bg-gold-400 px-3 py-1 text-xs font-bold uppercase tracking-wide text-pickle-900">★ Friday Night</span>
+            <p class="font-display text-sm font-bold uppercase tracking-[0.16em] text-gold-300">{hero.day} · The Main Event</p>
+            <h3 class="mt-1 font-display text-3xl font-bold text-cream sm:text-4xl">{hero.name}</h3>
+            <p class="mt-2 max-w-md text-cream/90">{hero.description}</p>
+            <div class="mt-5 flex items-end gap-2">
+              <span class="font-display text-5xl font-bold text-gold-300">{hero.price}</span>
+              <span class="mb-1.5 text-sm font-semibold text-cream/80">/ plate</span>
+            </div>
+            <a href={`tel:${site.phoneTel}`} class="mt-5 inline-flex items-center gap-2 rounded-full bg-cream px-5 py-2.5 text-sm font-bold text-barn-700 transition-colors hover:bg-gold-300">
+              Reserve your ribeye — call ahead
+            </a>
+          </article>
+        )}
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {everyday.map((s) => (
+            <article class="flex flex-col rounded-[var(--radius-card)] border border-line bg-paper p-5 shadow-sm transition-transform hover:-translate-y-0.5">
+              <div class="flex items-center justify-between">
+                <span class="font-display text-sm font-bold uppercase tracking-wide text-pickle-600">{s.day}</span>
+                <span class="rounded-full bg-gold-400/25 px-2.5 py-0.5 font-display text-lg font-bold text-barn-600">{s.price}</span>
+              </div>
+              <h3 class="mt-2 font-display text-xl font-bold leading-tight text-pickle-700">{s.name}</h3>
+              <p class="mt-1.5 text-sm text-ink-soft">{s.description}</p>
+            </article>
+          ))}
+
+          <!-- Sunday: closed -->
+          <article class="flex flex-col items-center justify-center rounded-[var(--radius-card)] border border-dashed border-line bg-cream-deep/50 p-5 text-center">
+            <span class="font-display text-sm font-bold uppercase tracking-wide text-ink-soft/60">Sunday</span>
+            <p class="mt-1 text-sm font-semibold text-ink-soft/70">Closed — see y’all Monday!</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- This week's flyer (framed) -->
+      <div class="lg:pt-2">
+        <div class="rounded-[var(--radius-card)] border-4 border-wood-500 bg-paper p-3 shadow-md">
+          <Image
+            src={flyer}
+            alt={`The Big Dill Grill weekly specials flyer — ${site.specialsWeekLabel}`}
+            widths={[400, 640, 1023]}
+            sizes="(min-width: 1024px) 420px, 90vw"
+            class="h-auto w-full rounded-[10px]"
+          />
+        </div>
+        <p class="mt-3 text-center text-sm text-ink-soft">
+          This week’s printed flyer — the specials rotate weekly.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

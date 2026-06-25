@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets';
+import * as site from '@data/site';
+import mascot from '@assets/mascot.png';
+---
+<section id="about" class="scroll-mt-20 bg-pickle-700 py-16 text-cream sm:py-24">
+  <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2">
+    <div>
+      <p class="font-display text-sm font-bold uppercase tracking-[0.18em] text-gold-300">Our story</p>
+      <h2 class="mt-2 font-display text-4xl font-bold text-cream sm:text-5xl">{site.about.heading}</h2>
+      <div class="mt-5 space-y-4 text-pickle-100/90">
+        {site.about.body.map((p) => <p>{p}</p>)}
+      </div>
+
+      <dl class="mt-8 grid gap-4 sm:grid-cols-3">
+        {site.about.ethosPoints.map((pt) => (
+          <div class="rounded-[var(--radius-card)] border border-pickle-300/30 bg-pickle-800/50 p-4">
+            <dt class="font-display text-lg font-bold text-gold-300">{pt.label}</dt>
+            <dd class="mt-1 text-sm text-pickle-100/80">{pt.blurb}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="space-y-5">
+      <div class="relative mx-auto max-w-sm">
+        <div class="absolute inset-0 rotate-3 rounded-[2rem] bg-gold-400/20"></div>
+        <div class="relative rounded-[2rem] bg-cream p-6 shadow-2xl">
+          <Image
+            src={mascot}
+            alt={`${site.name} mascot — a smiling pickle cowboy giving a thumbs up`}
+            widths={[320, 480]}
+            sizes="(min-width: 1024px) 360px, 70vw"
+            class="mx-auto h-auto w-full max-w-[300px]"
+          />
+          <p class="mt-2 text-center font-display text-lg font-bold text-pickle-700">“Big Dill” approved 👍</p>
+        </div>
+      </div>
+      <div class="rounded-[var(--radius-card)] border border-pickle-300/30 bg-pickle-800/50 p-5 text-center">
+        <p class="font-display text-xl font-bold text-cream">Proudly serving Kershaw County</p>
+        <p class="mt-2 text-sm text-pickle-100/80">
+          {site.serviceArea.join(' · ')}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

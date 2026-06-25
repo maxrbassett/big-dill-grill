@@ -1,0 +1,21 @@
+{
+  "name": "big-dill-grill",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^6"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4",
+    "@tailwindcss/vite": "^4"
+  },
+  "overrides": {
+    "vite": "7.3.5"
+  }
+}

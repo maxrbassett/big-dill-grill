@@ -1,0 +1,30 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Nav from '@components/Nav.astro';
+import Hero from '@components/Hero.astro';
+import WeeklySpecials from '@components/WeeklySpecials.astro';
+import Menu from '@components/Menu.astro';
+import About from '@components/About.astro';
+import VisitBlock from '@components/VisitBlock.astro';
+import SiteFooter from '@components/SiteFooter.astro';
+import CallBar from '@components/CallBar.astro';
+import CartDrawer from '@components/CartDrawer.astro';
+import DemoNotice from '@components/DemoNotice.astro';
+---
+<Layout>
+  <a href="#specials" class="skip-link">Skip to this week’s specials</a>
+  <Nav />
+  <main>
+    <Hero />
+    <WeeklySpecials />
+    <Menu />
+    <About />
+    <VisitBlock />
+  </main>
+  <SiteFooter />
+  <!-- Spacer so the fixed mobile call bar never covers the footer's last line -->
+  <div class="h-16 md:hidden" aria-hidden="true"></div>
+  <CallBar />
+  <CartDrawer />
+  <DemoNotice />
+</Layout>

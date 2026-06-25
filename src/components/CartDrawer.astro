@@ -1,0 +1,135 @@
+---
+/**
+ * Slide-out pickup-order cart + checkout (POC).
+ * Panels (cart → details → review → done) are toggled by src/scripts/order.ts.
+ * Included on every page so the nav cart button works site-wide.
+ */
+import * as site from '@data/site';
+---
+<div id="cart-backdrop" class="fixed inset-0 z-50 hidden bg-pickle-900/50 backdrop-blur-sm"></div>
+
+<aside
+  id="cart-drawer"
+  class="fixed inset-y-0 right-0 z-50 flex w-full max-w-md translate-x-full flex-col bg-cream shadow-2xl transition-transform duration-300 ease-out"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Pickup order"
+  aria-hidden="true"
+>
+  <!-- Header -->
+  <div class="flex items-center justify-between border-b border-line bg-pickle-700 px-5 py-4 text-cream">
+    <div>
+      <p class="font-display text-lg font-bold" data-cart-title>Your Order</p>
+      <p class="text-xs text-pickle-100/80">Pickup · {site.addressOneLine}</p>
+    </div>
+    <button type="button" data-cart-close class="grid h-9 w-9 place-items-center rounded-full text-cream/90 hover:bg-pickle-600" aria-label="Close order">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <!-- POC notice -->
+  <p class="border-b border-gold-400/40 bg-gold-400/15 px-5 py-2.5 text-xs leading-snug text-wood-600">
+    <span class="font-bold uppercase tracking-wide">Preview</span> — {site.ordering.notice}
+  </p>
+
+  <div class="min-h-0 flex-1 overflow-y-auto" data-panel-host>
+    <!-- PANEL: CART -->
+    <section data-panel="cart" class="px-5 py-4">
+      <div id="cart-empty" class="py-16 text-center">
+        <p class="font-display text-xl font-bold text-pickle-700">Your order is empty</p>
+        <p class="mt-2 text-sm text-ink-soft">Add something tasty from the menu to get started.</p>
+        <a href={site.orderUrl} data-cart-close class="mt-5 inline-block rounded-full bg-pickle-600 px-5 py-2.5 text-sm font-bold text-cream hover:bg-pickle-700">Browse the menu</a>
+      </div>
+      <div id="cart-lines" class="divide-y divide-line"></div>
+    </section>
+
+    <!-- PANEL: DETAILS -->
+    <section data-panel="details" class="hidden px-5 py-4">
+      <form id="details-form" class="space-y-4">
+        <div>
+          <label for="cust-name" class="block text-sm font-semibold text-ink">Name <span class="text-barn-600">*</span></label>
+          <input id="cust-name" name="name" type="text" required autocomplete="name" class="mt-1 w-full rounded-lg border border-line bg-paper px-3.5 py-2.5 text-ink focus:border-pickle-500 focus:outline-none" placeholder="Your name" />
+        </div>
+        <div>
+          <label for="cust-phone" class="block text-sm font-semibold text-ink">Phone <span class="text-barn-600">*</span></label>
+          <input id="cust-phone" name="phone" type="tel" required autocomplete="tel" class="mt-1 w-full rounded-lg border border-line bg-paper px-3.5 py-2.5 text-ink focus:border-pickle-500 focus:outline-none" placeholder="(803) 555-0123" />
+          <p class="mt-1 text-xs text-ink-soft/70">So we can text you when it’s ready (preview only).</p>
+        </div>
+        <div>
+          <label for="pickup-time" class="block text-sm font-semibold text-ink">Pickup time</label>
+          <select id="pickup-time" class="mt-1 w-full rounded-lg border border-line bg-paper px-3.5 py-2.5 text-ink focus:border-pickle-500 focus:outline-none"></select>
+        </div>
+        <div>
+          <label for="cust-notes" class="block text-sm font-semibold text-ink">Notes <span class="font-normal text-ink-soft/70">(optional)</span></label>
+          <textarea id="cust-notes" name="notes" rows="2" class="mt-1 w-full rounded-lg border border-line bg-paper px-3.5 py-2.5 text-ink focus:border-pickle-500 focus:outline-none" placeholder="Allergies, no onions, etc."></textarea>
+        </div>
+        <div class="flex gap-3 pt-1">
+          <button type="button" data-back-cart class="rounded-full border border-line bg-paper px-5 py-2.5 text-sm font-semibold text-pickle-700 hover:bg-cream-deep">Back</button>
+          <button type="submit" class="flex-1 rounded-full bg-pickle-600 px-5 py-2.5 text-sm font-bold text-cream hover:bg-pickle-700">Review order</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- PANEL: REVIEW -->
+    <section data-panel="review" class="hidden px-5 py-4">
+      <div id="review-pickup" class="space-y-1 rounded-[var(--radius-card)] border border-line bg-paper p-4 text-sm text-ink-soft"></div>
+      <div class="mt-4">
+        <h3 class="font-display text-sm font-bold uppercase tracking-wide text-pickle-600">Items</h3>
+        <div id="review-items" class="mt-2 divide-y divide-line/70"></div>
+      </div>
+      <div class="mt-4 flex items-center justify-between border-t border-line pt-3">
+        <span class="font-display text-lg font-bold text-pickle-700">Total</span>
+        <span id="review-total" class="font-display text-lg font-bold text-pickle-700">$0.00</span>
+      </div>
+      <p class="mt-1 text-xs text-ink-soft/70">Tax &amp; any fees are calculated in store. {site.ordering.payAtPickup ? 'Pay when you pick up.' : ''}</p>
+      <div class="mt-5 flex gap-3">
+        <button type="button" data-back-details class="rounded-full border border-line bg-paper px-5 py-2.5 text-sm font-semibold text-pickle-700 hover:bg-cream-deep">Back</button>
+        <button type="button" data-place-order class="flex-1 rounded-full bg-barn-500 px-5 py-2.5 text-sm font-bold text-cream hover:bg-barn-600">Place pickup order</button>
+      </div>
+    </section>
+
+    <!-- PANEL: DONE -->
+    <section data-panel="done" class="hidden px-5 py-8 text-center">
+      <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-pickle-100 text-pickle-600">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <p id="done-greeting" class="mt-4 font-display text-2xl font-bold text-pickle-700">Thanks!</p>
+      <p class="mt-1 text-sm text-ink-soft">Your pickup order is in.</p>
+
+      <div class="mt-5 rounded-[var(--radius-card)] border border-line bg-paper p-5 text-left">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-ink-soft">Order number</span>
+          <span id="done-order-no" class="font-display text-lg font-bold text-pickle-700">BDG-0000</span>
+        </div>
+        <div class="mt-2 flex items-center justify-between">
+          <span class="text-sm text-ink-soft">Pickup</span>
+          <span id="done-eta" class="text-sm font-semibold text-ink"></span>
+        </div>
+        <div class="mt-2 flex items-center justify-between">
+          <span class="text-sm text-ink-soft">Total (pay at pickup)</span>
+          <span id="done-total" class="text-sm font-semibold text-ink"></span>
+        </div>
+      </div>
+
+      <p class="mt-4 rounded-lg bg-gold-400/15 px-4 py-3 text-xs leading-snug text-wood-600">{site.ordering.confirmationNote}</p>
+
+      <div class="mt-5 flex flex-col gap-3">
+        <a href={`tel:${site.phoneTel}`} class="rounded-full bg-pickle-600 px-5 py-2.5 text-sm font-bold text-cream hover:bg-pickle-700">Call to place it for real — {site.phone}</a>
+        <button type="button" data-new-order class="rounded-full border border-line bg-paper px-5 py-2.5 text-sm font-semibold text-pickle-700 hover:bg-cream-deep">Start a new order</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Sticky footer (cart panel only) -->
+  <div id="cart-footer" class="hidden border-t border-line bg-cream px-5 py-4">
+    <div class="flex items-center justify-between">
+      <span class="text-sm text-ink-soft">Subtotal</span>
+      <span id="cart-subtotal" class="font-display text-xl font-bold text-pickle-700">$0.00</span>
+    </div>
+    <button type="button" data-go-details class="mt-3 w-full rounded-full bg-barn-500 px-5 py-3 font-bold text-cream hover:bg-barn-600">Continue to pickup details</button>
+  </div>
+</aside>
+
+<script>
+  import '../scripts/order';
+</script>

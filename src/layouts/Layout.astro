@@ -1,0 +1,84 @@
+---
+import '@styles/global.css';
+import * as site from '@data/site';
+import ogPlaceholder from '@assets/og-placeholder.svg';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = title ?? site.seo.title;
+const pageDescription = description ?? site.seo.description;
+
+const ogImage = Astro.site
+  ? new URL(ogPlaceholder.src, Astro.site).href
+  : ogPlaceholder.src;
+
+const sameAs = site.socialUrl ? [site.socialUrl] : [];
+
+const restaurant = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  '@id': Astro.site?.href,
+  name: site.name,
+  image: ogImage,
+  telephone: site.phone,
+  url: Astro.site?.href,
+  servesCuisine: 'American',
+  priceRange: site.seo.priceRange,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: site.address.state,
+    postalCode: site.address.zip,
+    addressCountry: 'US',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: site.geo.lat,
+    longitude: site.geo.lng,
+  },
+  openingHoursSpecification: site.openingHoursSpec,
+  hasMap: site.mapsUrl,
+  slogan: site.slogan,
+  ...(sameAs.length ? { sameAs } : {}),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Mulish:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta property="og:type" content="restaurant.restaurant" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={site.seo.ogAlt} />
+    {Astro.site && <meta property="og:url" content={Astro.site.href} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="theme-color" content="#426528" />
+    <script type="application/ld+json" set:html={JSON.stringify(restaurant)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

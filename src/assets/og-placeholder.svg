@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="The Big Dill Grill — Good Food. Good People. Good Times.">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34501f"/>
+      <stop offset="1" stop-color="#283d18"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- gingham-ish top band -->
+  <rect width="1200" height="14" fill="#b03a26"/>
+  <rect y="616" width="1200" height="14" fill="#ecbd3c"/>
+
+  <!-- mascot badge, left -->
+  <g transform="translate(250 315) scale(2.6)">
+    <circle r="92" fill="#426528"/>
+    <circle r="78" fill="#557d34"/>
+    <ellipse cy="12" rx="38" ry="55" fill="#6f9d49"/>
+    <ellipse cy="12" rx="38" ry="55" fill="none" stroke="#34501f" stroke-width="4"/>
+    <g fill="#91b86f"><circle cx="-14" cy="-12" r="6"/><circle cx="9" cy="2" r="6.5"/><circle cx="-9" cy="30" r="7"/></g>
+    <g fill="#283d18"><rect x="-26" y="-6" width="22" height="15" rx="6"/><rect x="5" y="-6" width="22" height="15" rx="6"/><rect x="-5" y="-2" width="10" height="4"/></g>
+    <path d="M-15 28 q15 15 30 0" fill="none" stroke="#283d18" stroke-width="5" stroke-linecap="round"/>
+    <g fill="#7d5430"><ellipse cy="-44" rx="50" ry="11"/><path d="M-26 -45 q4 -33 26 -33 q22 0 26 33 z"/></g>
+    <rect x="-25" y="-53" width="50" height="8" rx="4" fill="#5f3f23"/>
+    <rect x="-7" y="-66" width="15" height="10" rx="2" fill="#ecbd3c"/>
+  </g>
+
+  <!-- wordmark, right -->
+  <g font-family="Georgia, 'Times New Roman', serif">
+    <text x="560" y="250" font-size="84" font-weight="700" fill="#f8f3e7">The Big</text>
+    <text x="560" y="345" font-size="84" font-weight="700" fill="#ecbd3c">Dill Grill</text>
+    <text x="562" y="410" font-size="32" font-weight="700" fill="#d6694f" font-family="Verdana, sans-serif">Where every meal is a “Big Dill”!</text>
+    <text x="562" y="455" font-size="26" fill="#d9e7cc" font-family="Verdana, sans-serif">Good Food. Good People. Good Times.</text>
+    <text x="562" y="510" font-size="24" fill="#b9d3a3" font-family="Verdana, sans-serif">Kershaw, South Carolina · (803) 272-0357</text>
+  </g>
+</svg>

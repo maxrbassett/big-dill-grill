@@ -1,0 +1,62 @@
+---
+import * as site from '@data/site';
+
+const money = (n: number) => `$${n.toFixed(2)}`;
+const hasPlaceholderPrices = site.orderMenu.some((c) => c.items.some((i) => !i.priceConfirmed));
+---
+<section class="bg-cream py-10 sm:py-14">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
+    <!-- Category quick-nav -->
+    <nav class="sticky top-[57px] z-20 -mx-4 mb-8 flex gap-2 overflow-x-auto border-b border-line bg-cream/95 px-4 py-3 backdrop-blur sm:top-[61px]" aria-label="Menu categories">
+      {site.orderMenu.map((cat) => (
+        <a href={`#cat-${cat.id}`} class="shrink-0 rounded-full border border-line bg-paper px-4 py-1.5 text-sm font-semibold text-pickle-700 hover:border-pickle-400 hover:bg-pickle-50">{cat.title}</a>
+      ))}
+    </nav>
+
+    {hasPlaceholderPrices && (
+      <p class="mb-8 rounded-[var(--radius-card)] border border-dashed border-wood-400/60 bg-cream-deep/50 px-4 py-3 text-sm text-ink-soft">
+        <span class="font-semibold text-wood-600">A note on prices:</span> weekly-special prices are confirmed from the flyer.
+        Items marked <span class="font-semibold">“preview price”</span> are realistic placeholders pending the owner’s real menu pricing.
+      </p>
+    )}
+
+    <div class="space-y-12">
+      {site.orderMenu.map((cat) => (
+        <div id={`cat-${cat.id}`} class="scroll-mt-32">
+          <div class="flex items-baseline gap-3">
+            <h2 class="font-display text-2xl font-bold text-pickle-700 sm:text-3xl">{cat.title}</h2>
+          </div>
+          {cat.blurb && <p class="mt-1 text-sm text-ink-soft">{cat.blurb}</p>}
+
+          <ul class="mt-5 grid gap-4 sm:grid-cols-2">
+            {cat.items.map((item) => (
+              <li class="flex items-start justify-between gap-4 rounded-[var(--radius-card)] border border-line bg-paper p-4 shadow-sm">
+                <div class="min-w-0">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="font-display text-lg font-bold leading-tight text-pickle-700">{item.name}</h3>
+                    {item.tag && <span class="rounded-full bg-pickle-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-pickle-700">{item.tag}</span>}
+                  </div>
+                  {item.description && <p class="mt-1 text-sm text-ink-soft">{item.description}</p>}
+                  <p class="mt-2 flex items-center gap-2">
+                    <span class="font-display text-base font-bold text-ink">{money(item.price)}</span>
+                    {!item.priceConfirmed && <span class="rounded bg-gold-400/25 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-wood-600">preview price</span>}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  class="shrink-0 rounded-full bg-pickle-600 px-4 py-2 text-sm font-bold text-cream transition-colors hover:bg-pickle-700"
+                  data-add-item
+                  data-id={item.id}
+                  data-name={item.name}
+                  data-price={item.price}
+                  data-label-default="Add"
+                  aria-label={`Add ${item.name} to your order`}
+                >Add</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

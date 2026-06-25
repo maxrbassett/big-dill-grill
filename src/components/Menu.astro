@@ -1,0 +1,51 @@
+---
+import * as site from '@data/site';
+---
+<section id="menu" class="scroll-mt-20 bg-cream py-16 sm:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="max-w-2xl">
+      <p class="font-display text-sm font-bold uppercase tracking-[0.18em] text-barn-500">From our kitchen</p>
+      <h2 class="mt-2 font-display text-4xl font-bold text-pickle-700 sm:text-5xl">The Menu</h2>
+      <p class="mt-4 text-ink-soft">
+        A taste of what the grill turns out — fresh salads, hot melts and hearty plates from the grill.
+      </p>
+    </div>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {site.menuSections.map((section) => (
+        <div class="rounded-[var(--radius-card)] border border-line bg-paper p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <span class="h-8 w-1.5 rounded-full bg-pickle-500" aria-hidden="true"></span>
+            <h3 class="font-display text-2xl font-bold text-pickle-700">{section.title}</h3>
+          </div>
+          {section.blurb && <p class="mt-2 text-sm text-ink-soft/80">{section.blurb}</p>}
+          <ul class="mt-4 divide-y divide-line/70">
+            {section.items.map((item) => (
+              <li class="py-3">
+                <p class="font-semibold text-ink">{item.name}</p>
+                {item.description && <p class="mt-0.5 text-sm text-ink-soft">{item.description}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-8 flex flex-col items-start gap-4 rounded-[var(--radius-card)] border border-dashed border-wood-400/60 bg-cream-deep/50 p-6 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-start gap-3">
+        <span class="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold-400/30 text-wood-600" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 8v4l3 2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9"/></svg>
+        </span>
+        <p class="max-w-xl text-sm text-ink-soft">{site.menuPlaceholder}</p>
+      </div>
+      <div class="flex shrink-0 flex-wrap gap-3">
+        <a href={site.orderUrl} class="rounded-full bg-pickle-600 px-5 py-2.5 text-sm font-bold text-cream transition-colors hover:bg-pickle-700">
+          Order online
+        </a>
+        <a href={`tel:${site.phoneTel}`} class="rounded-full border border-pickle-600 px-5 py-2.5 text-sm font-bold text-pickle-700 transition-colors hover:bg-pickle-600 hover:text-cream">
+          Call for today’s menu
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

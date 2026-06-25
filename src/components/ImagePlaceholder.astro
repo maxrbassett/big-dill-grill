@@ -1,0 +1,77 @@
+---
+/**
+ * Brand-colored placeholder used wherever a real photo will eventually go.
+ * No real images are required for the layout to look finished — when you drop a
+ * JPEG into images/ + src/assets, swap the placeholder for an <Image>.
+ * Variants pick a tasteful inline scene (food plate, flyer, storefront).
+ */
+interface Props {
+  label?: string;
+  ratio?: string; // e.g. '4 / 3'
+  variant?: 'food' | 'flyer' | 'hero' | 'generic';
+  class?: string;
+  showBadge?: boolean;
+}
+const {
+  label = 'Photo coming soon',
+  ratio = '4 / 3',
+  variant = 'generic',
+  class: cls = '',
+  showBadge = true,
+} = Astro.props;
+---
+<div
+  class={`relative overflow-hidden rounded-[var(--radius-card)] bg-pickle-700 ${cls}`}
+  style={`aspect-ratio:${ratio};`}
+  role="img"
+  aria-label={label}
+>
+  <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" class="h-full w-full" aria-hidden="true">
+    <defs>
+      <linearGradient id={`ph-${variant}`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#557d34" />
+        <stop offset="1" stop-color="#34501f" />
+      </linearGradient>
+    </defs>
+    <rect width="400" height="300" fill={`url(#ph-${variant})`} />
+
+    {variant === 'food' && (
+      <g>
+        <circle cx="200" cy="150" r="78" fill="#f8f3e7" opacity="0.95" />
+        <circle cx="200" cy="150" r="78" fill="none" stroke="#e3d9c2" stroke-width="6" />
+        <circle cx="200" cy="150" r="52" fill="#c79a6b" />
+        <circle cx="182" cy="138" r="14" fill="#b03a26" />
+        <circle cx="214" cy="142" r="12" fill="#6f9d49" />
+        <circle cx="198" cy="168" r="13" fill="#ecbd3c" />
+      </g>
+    )}
+
+    {variant === 'flyer' && (
+      <g>
+        <rect x="132" y="56" width="136" height="188" rx="10" fill="#f8f3e7" />
+        <rect x="132" y="56" width="136" height="188" rx="10" fill="none" stroke="#7d5430" stroke-width="6" />
+        <rect x="150" y="76" width="100" height="16" rx="4" fill="#b03a26" />
+        <rect x="150" y="104" width="100" height="9" rx="3" fill="#c79a6b" />
+        <rect x="150" y="120" width="100" height="9" rx="3" fill="#c79a6b" />
+        <rect x="150" y="136" width="100" height="9" rx="3" fill="#c79a6b" />
+        <rect x="150" y="152" width="100" height="9" rx="3" fill="#c79a6b" />
+        <rect x="150" y="172" width="100" height="9" rx="3" fill="#ecbd3c" />
+        <rect x="150" y="188" width="60" height="9" rx="3" fill="#c79a6b" />
+      </g>
+    )}
+
+    {(variant === 'hero' || variant === 'generic') && (
+      <g opacity="0.9">
+        <circle cx="312" cy="64" r="30" fill="#ecbd3c" opacity="0.85" />
+        <path d="M0 230 q60 -40 120 -6 q60 34 130 -4 q70 -36 150 4 L400 300 L0 300 Z" fill="#283d18" opacity="0.55" />
+        <path d="M0 252 q70 -28 150 0 q80 28 160 -4 q50 -18 90 0 L400 300 L0 300 Z" fill="#1d2d12" opacity="0.6" />
+      </g>
+    )}
+  </svg>
+
+  {showBadge && (
+    <span class="absolute left-3 top-3 rounded-full bg-pickle-900/75 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-cream">
+      {label}
+    </span>
+  )}
+</div>

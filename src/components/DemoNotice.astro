@@ -1,0 +1,93 @@
+---
+/**
+ * Site-wide accessible "Demo — feature coming soon" modal.
+ * Any element with a `data-demo` attribute opens it (optionally `data-demo="Custom message"`).
+ * Closes on Esc, on backdrop click, on the close button; traps focus while open
+ * and restores focus to the trigger on close.
+ */
+import * as site from '@data/site';
+---
+<div
+  id="demo-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="demo-modal-title"
+  aria-describedby="demo-modal-body"
+>
+  <div id="demo-modal-backdrop" class="absolute inset-0 bg-pickle-900/60 backdrop-blur-sm"></div>
+  <div class="relative w-full max-w-md rounded-2xl border border-line bg-cream p-6 shadow-2xl">
+    <div class="mb-3 inline-flex items-center gap-2 rounded-full bg-gold-400/25 px-3 py-1 text-xs font-bold uppercase tracking-wide text-wood-600">
+      Preview
+    </div>
+    <h2 id="demo-modal-title" class="font-display text-2xl font-bold text-pickle-700">{site.demoNotice.title}</h2>
+    <p id="demo-modal-body" class="mt-3 text-sm leading-relaxed text-ink-soft">{site.demoNotice.body}</p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href={`tel:${site.phoneTel}`} class="rounded-full bg-pickle-600 px-4 py-2.5 text-sm font-semibold text-cream hover:bg-pickle-700">Call {site.phone}</a>
+      <button type="button" id="demo-modal-close" class="rounded-full border border-line bg-paper px-4 py-2.5 text-sm font-semibold text-pickle-700 hover:bg-cream-deep">Got it</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('demo-modal');
+  const bodyEl = document.getElementById('demo-modal-body');
+  const defaultBody = bodyEl?.textContent ?? '';
+  const closeBtn = document.getElementById('demo-modal-close');
+  const backdrop = document.getElementById('demo-modal-backdrop');
+  let lastFocused: HTMLElement | null = null;
+
+  function focusables(): HTMLElement[] {
+    if (!modal) return [];
+    return Array.from(
+      modal.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+    ).filter((el) => el.offsetParent !== null);
+  }
+
+  function openModal(message?: string) {
+    if (!modal) return;
+    lastFocused = document.activeElement as HTMLElement;
+    if (bodyEl) bodyEl.textContent = message && message.length > 1 ? message : defaultBody;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    focusables()[0]?.focus();
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    lastFocused?.focus();
+  }
+
+  document.addEventListener('click', (e) => {
+    const trigger = (e.target as HTMLElement)?.closest('[data-demo]');
+    if (trigger) {
+      e.preventDefault();
+      openModal(trigger.getAttribute('data-demo') ?? undefined);
+    }
+  });
+
+  closeBtn?.addEventListener('click', closeModal);
+  backdrop?.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (modal?.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Tab') {
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+</script>
