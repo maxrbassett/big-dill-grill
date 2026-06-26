@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // ⚠️ Must EXACTLY match your existing Worker name in the Cloudflare dashboard,
+  // otherwise this deploys a NEW Worker instead of updating the existing one.
+  // Defaulted from package.json "name" — verify against the dashboard.
+  "name": "big-dill-grill",
+  "compatibility_date": "2026-06-25",
+  // Static-only: serve the built dist/ as Workers static assets. No SSR adapter.
+  "assets": { "directory": "./dist" }
+}
